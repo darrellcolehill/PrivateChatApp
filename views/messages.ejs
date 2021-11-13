@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <script>
+    </script>
+
+        <%
+        if(messages.length!=0){
+        var i=0;
+        messages.forEach(function(data){
+        %>
+            <h1>sender: <%= messages[i].sender %> <br> content: <%=messages[i].content %> <br> messageNo: <%=messages[i].messageNo %> </h1><br>
+        <%  i++; }) %>
+        <% } else{ %>
+            <h1>no messages found</h1>
+        <% } %>
+
+
+        <form method="post">
+          message <br>
+          <input type="text" name="message"><br>
+          <input type="submit" name="sendMessage" value="sendMessage">
+        </form>
+
+
+  </body>
+</html>

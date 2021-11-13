@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+
+
+<script type="text/javascript">
+
+
+</script>
+
+          <%
+          if(inboxes.length!=0){
+          var i=0;
+          inboxes.forEach(function(data){
+          link = "http://localhost:3000/messages?user1=" + inboxes[i].user1 + "&user2=" + inboxes[i].user2
+          %>
+              <h1>inbox <%= i + 1 %> <%=inboxes[i].user1 %> <%=inboxes[i].user2 %></h1> <!--TODO: make this a link that send the requested inbox keys to the server-->
+              <a href="<%= link %>">View inbox</a>
+          <%  i++; }) %>
+          <% } else{ %>
+              <h1>no inboxes found</h1>
+          <% } %>
+      </table>
+      <br><br><br>
+      <a href="http://localhost:3000/createInbox">Create new inbox</a>
+  </body>
+</html>
