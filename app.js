@@ -20,6 +20,7 @@ var profileRouter = require('./routes/profile');
 var createInboxRouter = require('./routes/createInbox');
 var inboxDisplayRouter = require('./routes/inboxDisplay');
 var messagesRouter = require('./routes/messages');
+var adminRouter = require('./routes/admin');
 
 // initializes the app variable, sets it port to 3000, and listens to request to that port
 var app = express();
@@ -48,6 +49,7 @@ app.use('/profile', profileRouter);
 app.use('/inboxDisplay', inboxDisplayRouter);
 app.use('/createInbox', createInboxRouter);
 app.use('/messages', messagesRouter);
+app.use('/admin', adminRouter);
 
 
 // catch 404 and forward to error handler
