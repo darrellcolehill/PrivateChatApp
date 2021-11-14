@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 
   var createInboxTable = "CREATE TABLE inbox (user1 VARCHAR(20), user2 VARCHAR(20), numMessages INT, PRIMARY KEY(user1, user2))";
   var createInConversationTable = "CREATE TABLE inconversation (username VARCHAR(20), user1 VARCHAR(20), user2 VARCHAR(20), PRIMARY KEY(username, user1, user2))";
-  var createMessageTable = "CREATE TABLE message (user1 VARCHAR(20), user2 VARCHAR(20), messageNo, recipient VARCHAR(20), sender VARCHAR(20), content TEXT, PRIMARY KEY(user1, user2, messageNo)";
+  var createMessageTable = "CREATE TABLE message (user1 VARCHAR(20), user2 VARCHAR(20), messageNo INT, recipient VARCHAR(20), sender VARCHAR(20), content TEXT, PRIMARY KEY(user1, user2, messageNo))";
   var createUserTable = "CREATE TABLE users (username VARCHAR(20), password VARCHAR(60), email VARCHAR(20), dob DATE, PRIMARY KEY(username))";
   
   
