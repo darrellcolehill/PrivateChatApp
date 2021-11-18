@@ -3,11 +3,55 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <style>
+
+    input[type=text]{
+      width: 100%;
+      padding: 16px 8px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      }
+    input[type="submit"] {
+      background-color: #8ebf42;
+      color: white;
+      padding: 14px 0;
+      margin: 10px 0;
+      border: none;
+      cursor: grabbing;
+      width: 15%;
+      float: right;
+      }
+    
+    </style>
+
   </head>
   <body>
     <script>
     </script>
 
+
+<div style="height:400px;overflow:auto;scrollbar-base-color:gold;font-family:sans-serif;padding:10px;">
+  
+      
+        <%
+        if(messages.length!=0){
+        var i=0;
+        messages.forEach(function(data){
+        %>
+        <div style="height:100px;width:200px;overflow:auto;background-color:yellowgreen;color:white;scrollbar-base-color:gold;font-family:sans-serif;padding:10px;border-radius: 25px;">
+            <h3>sender: <%= messages[i].sender %> <br> content: <%=messages[i].content %> <br> messageNo: <%=messages[i].messageNo %> </h3>
+        </div>
+        <br>
+        <%  i++; }) %>
+        <% } else{ %>
+            <h1>no messages found</h1>
+        <% } %>
+
+</div>
+        <!--
         <%
         if(messages.length!=0){
         var i=0;
@@ -18,14 +62,11 @@
         <% } else{ %>
             <h1>no messages found</h1>
         <% } %>
-
-
-        <form method="post">
-          message <br>
-          <input type="text" name="message"><br>
-          <input type="submit" name="sendMessage" value="sendMessage">
-        </form>
-
+        -->
+          <form method="post">
+            <input type="text" placeholder="message" name="message"><br>
+            <input type="submit" name="sendMessage" value="sendMessage">
+          </form>
 
   </body>
 </html>
