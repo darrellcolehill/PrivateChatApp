@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html>
   <head>
@@ -5,12 +6,128 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
+
+
+    
+      <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
 
     <a href="http://localhost:3000/login">login</a>
     <br>
     <br>
     <a href="http://localhost:3000/signup">signup</a>
+    
+    
   </body>
+</html>
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <title>Bootstrap 4 Website Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+
+    .messageContent {
+      height: 150px;
+      width: 55%;
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+
+    /*
+      ADD @media that changes format depending on if the user is on a mobile device or not.
+      Basically make the inbox div hidden and make it like Discord's where it just pops out from the side. 
+    */
+
+  
+  </style>
+</head>
+<body>
+
+
+<div class="container-fluid vh-100"">
+  
+  <!--<div class="row vh-100">-->
+  <div class="row" style="height:80%">
+
+    <div class="col-sm-4" style="background-color:#f2f2f2; overflow-y: scroll; height: 100%;">
+      <h2>Messages</h2>
+
+      <!--ADD INBOXES HERE note: add current inbox at the top as active.
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <hr>
+          <a class="nav-link active" href="#">Active</a>
+        </li>
+        <li class="nav-item">
+          <hr>
+          <a class="nav-link" href="#">Link</a>
+        </li>
+
+      </ul>
+      <hr class="d-sm-none">
+      -->
+      <ul class="nav nav-pills flex-column">
+      <%
+          if(inboxes.length!=0){
+          var i=0;
+          inboxes.forEach(function(data){
+          link = "http://localhost:3000/?user1=" + inboxes[i].user1 + "&user2=" + inboxes[i].user2
+          %>
+          <li class="nav-item">
+            <hr>
+            <a class="nav-link" href="<%= link %>">inbox <%= i + 1 %> <%=inboxes[i].user1 %> <%=inboxes[i].user2 %></a>
+          </li>
+          <%  i++; }) %>
+          <% } else{ %>
+              <h1>no inboxes found</h1>
+          <% } %>
+      </ul>
+      <hr class="d-sm-none">
+
+    </div>
+    
+    
+    <div class="col-sm-8 " style="background-color: rgb(243, 236, 204); overflow-y: scroll; height: 100%">
+    
+      <!--ADD MESSAGES FOR CURRENT INBOX HERE-->
+      <div class="messageContent" style="float:right; overflow-y: scroll; margin:2.5%; background-color: rgb(28, 231, 130);"><p style="word-wrap: break-word">hello</p></div>
+      <div class="messageContent" style="float:left; overflow-y: scroll; margin:2.5%; background-color: rgb(106, 179, 228);">Fake Image</div>
+
+    </div>
+
+  </div>
+
+
+  <div class="row" style="height:20%">
+  
+    <div class="col-sm-4" style="background-color:#f2f2f2; height: 100%;"></div>
+
+    <div class="col-sm-8 " style="background-color: rgb(206, 231, 240); height: 100%;">
+    
+      <div class="form-group" style="height:100%">
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" style="display: inline; width:87%; margin-top: 2%"></textarea>
+        <button type="submit" class="btn btn-primary" style="margin-bottom: 4%" >Send</button>
+      </div>
+    
+    </div>
+  
+  </div>
+  
+</div>
+
+
+
+</body>
 </html>
