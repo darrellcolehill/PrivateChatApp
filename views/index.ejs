@@ -44,6 +44,19 @@
       padding: 10px;
     }
 
+    #sender {
+      float:left; overflow-y: 
+      scroll; margin:2.5%; 
+      background-color: rgb(106, 179, 228);
+    }
+
+    #reciever {
+      float:right; 
+      overflow-y: scroll; 
+      margin:2.5%; 
+      background-color: rgb(28, 231, 130);
+    }
+
 
     /*
       ADD @media that changes format depending on if the user is on a mobile device or not.
@@ -80,19 +93,27 @@
       -->
       <ul class="nav nav-pills flex-column">
       <%
-          if(inboxes.length!=0){
-          var i=0;
-          inboxes.forEach(function(data){
-          link = "http://localhost:3000/?user1=" + inboxes[i].user1 + "&user2=" + inboxes[i].user2
-          %>
-          <li class="nav-item">
-            <hr>
-            <a class="nav-link" href="<%= link %>">inbox <%= i + 1 %> <%=inboxes[i].user1 %> <%=inboxes[i].user2 %></a>
-          </li>
-          <%  i++; }) %>
-          <% } else{ %>
-              <h1>no inboxes found</h1>
-          <% } %>
+          if(!inboxes)
+          {
+            // TODO: tell user that they need to login to see inbox data
+          }
+          else
+          {    
+            if(inboxes.length!=0){
+            var i=0;
+            inboxes.forEach(function(data){
+            link = "http://localhost:3000/?user1=" + inboxes[i].user1 + "&user2=" + inboxes[i].user2
+            %>
+            <li class="nav-item">
+              <hr>
+              <a class="nav-link" href="<%= link %>">inbox <%= i + 1 %> <%=inboxes[i].user1 %> <%=inboxes[i].user2 %></a>
+            </li>
+            <%  i++; }) %>
+            <% } else{ %>
+                <h1>no inboxes found</h1>
+            <% } 
+          }%>
+
       </ul>
       <hr class="d-sm-none">
 
@@ -102,9 +123,36 @@
     <div class="col-sm-8 " style="background-color: rgb(243, 236, 204); overflow-y: scroll; height: 100%">
     
       <!--ADD MESSAGES FOR CURRENT INBOX HERE-->
+
+      <%
+        if(messages.length!=0){
+        var i=0;
+        messages.forEach(function(data){
+          if(messages[i].sender == curUser)
+          {
+          %>
+          <div class="messageContent" id="sender"><p style="word-wrap: break-word"><%=messages[i].content %></p></div>
+          <%  
+          } else {
+          %>
+            <div class="messageContent" id="reciever"><p style="word-wrap: break-word"><%=messages[i].content %></p></div>
+          <%
+          }
+          i++; 
+        }) 
+          %>
+        <% 
+        } else { 
+        %>
+            <h1>no messages found</h1>
+        <% 
+        } 
+        %>
+
+      <!--
       <div class="messageContent" style="float:right; overflow-y: scroll; margin:2.5%; background-color: rgb(28, 231, 130);"><p style="word-wrap: break-word">hello</p></div>
       <div class="messageContent" style="float:left; overflow-y: scroll; margin:2.5%; background-color: rgb(106, 179, 228);">Fake Image</div>
-
+      -->
     </div>
 
   </div>
@@ -115,12 +163,11 @@
     <div class="col-sm-4" style="background-color:#f2f2f2; height: 100%;"></div>
 
     <div class="col-sm-8 " style="background-color: rgb(206, 231, 240); height: 100%;">
-    
+      <!--TODO: make this send post request to the server containing message data!!!!!-->
       <div class="form-group" style="height:100%">
         <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" style="display: inline; width:87%; margin-top: 2%"></textarea>
         <button type="submit" class="btn btn-primary" style="margin-bottom: 4%" >Send</button>
       </div>
-    
     </div>
   
   </div>
