@@ -67,7 +67,7 @@ router.get('/', function(req, res, next) {
       else
       {
         //console.log("MISSING USERSESERSERSERES");
-        res.render('index', { title: 'Private Chat App', inboxes});
+        res.render('index', { title: 'Private Chat App', inboxes, messages: null});
       }
     }
   });
@@ -75,8 +75,27 @@ router.get('/', function(req, res, next) {
 
 // TODO: add code to process POST request (sending mesages)
 
+});
 
 
+router.post('/', function(req, res, next) {
+  //console.log("post made");
+  //res.render('index', { title: 'Private Chat App', inboxes, messages: null});
+
+  var username = "username"; // TODO: CHANGE TO GET FROM COOKIE
+  var inboxes;
+  var user1 = req.query.user1;
+  var user2 = req.query.user2;
+  var messages;
+
+  if(user1 && user2)
+  {
+    // TODO: send message to specified inbox and then reidrect to the same page so the messages page is updated. 
+  }
+  else
+  {
+    // missing inbox data in url variables
+  }
 });
 
 module.exports = router;

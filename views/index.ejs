@@ -1,29 +1,3 @@
-<!--
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-
-
-    
-      <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-
-    <a href="http://localhost:3000/login">login</a>
-    <br>
-    <br>
-    <a href="http://localhost:3000/signup">signup</a>
-    
-    
-  </body>
-</html>
--->
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,20 +51,7 @@
     <div class="col-sm-4" style="background-color:#f2f2f2; overflow-y: scroll; height: 100%;">
       <h2>Messages</h2>
 
-      <!--ADD INBOXES HERE note: add current inbox at the top as active.
-      <ul class="nav nav-pills flex-column">
-        <li class="nav-item">
-          <hr>
-          <a class="nav-link active" href="#">Active</a>
-        </li>
-        <li class="nav-item">
-          <hr>
-          <a class="nav-link" href="#">Link</a>
-        </li>
-
-      </ul>
-      <hr class="d-sm-none">
-      -->
+      <!--ADD INBOXES HERE note: add current inbox at the top as active.-->
       <ul class="nav nav-pills flex-column">
       <%
           if(!inboxes)
@@ -125,13 +86,13 @@
       <!--ADD MESSAGES FOR CURRENT INBOX HERE-->
 
       <%
-        if(messages.length!=0){
+        if(messages && messages.length!=0){
         var i=0;
         messages.forEach(function(data){
           if(messages[i].sender == curUser)
           {
           %>
-          <div class="messageContent" id="sender"><p style="word-wrap: break-word"><%=messages[i].content %></p></div>
+            <div class="messageContent" id="sender"><p style="word-wrap: break-word"><%=messages[i].content %></p></div>
           <%  
           } else {
           %>
@@ -164,9 +125,12 @@
 
     <div class="col-sm-8 " style="background-color: rgb(206, 231, 240); height: 100%;">
       <!--TODO: make this send post request to the server containing message data!!!!!-->
+      
       <div class="form-group" style="height:100%">
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" style="display: inline; width:87%; margin-top: 2%"></textarea>
-        <button type="submit" class="btn btn-primary" style="margin-bottom: 4%" >Send</button>
+        <form id="messageForm" method="post">
+          <textarea class="form-control" id="exampleFormControlTextarea1" form="messageForm" rows="4" style="display: inline; width:87%; margin-top: 2%"></textarea>
+          <button type="submit" class="btn btn-primary" style="margin-bottom: 4%" >Send</button>
+        </form>
       </div>
     </div>
   
