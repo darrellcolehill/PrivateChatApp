@@ -57,7 +57,7 @@ router.post('/', function(req, res, next){
 					{
 						// ======================JWT LOGIC======================
 						
-						const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+						//const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
 
 						// Set cookie expiration date
 					    let options = {
@@ -66,13 +66,13 @@ router.post('/', function(req, res, next){
 					    }
 
 						//sends the token to the user's brower
-					    res.cookie('whatsAppClone', accessToken, options) // NOTE: options is optional
+					    res.cookie('moosenger', username, options) // NOTE: options is optional
 						
 						console.log(req.cookies);
 						// ========================================================================
 
               			console.log("User logged in");
-						res.redirect("/profile");
+						res.redirect("/");
 						
 					}
 					else
@@ -86,7 +86,7 @@ router.post('/', function(req, res, next){
 			{
 				// User not found, send back to login page
 				console.log("user does not exist...");
-				res.render('login', { title: 'Private Chat App', error: 'Incorrect username' });
+				res.render('login', { title: 'Private Chat App', error: 'Could not find user' });
 			}
 		}
 	});

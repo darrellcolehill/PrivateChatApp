@@ -71,6 +71,15 @@
         <label for="psw"><strong>Password</strong></label>
         <input type="password" placeholder="Enter Password" name="password">
       </div>
+      <% 
+        if(error && error != "none")
+        {
+      %>
+          <p style="color:red"> <%= error %> </p>
+      <%
+        }
+      %>
+      <p>Don't have an account? <a href="http://localhost:3000/signup"> Click here :)</a></p>
       <button type="submit">Login</button>
       <!--
       <div class="container" style="background-color: #eee">
