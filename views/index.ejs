@@ -10,48 +10,131 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <style>
-
     .messageContent {
       height: 150px;
       width: 55%;
       border-radius: 10px;
       padding: 10px;
     }
-
     #sender {
-      float:left; overflow-y: 
+      float:right; overflow-y: 
       scroll; margin:2.5%; 
       background-color: rgb(106, 179, 228);
     }
-
     #reciever {
-      float:right; 
+      float:left; 
       overflow-y: scroll; 
       margin:2.5%; 
       background-color: rgb(28, 231, 130);
     }
-
-
+    #inboxes {
+      
+      width: 33%;
+      height: 80%;
+      float: left;
+      display: inline-block;
+    }
+    #messages {
+   
+      width: 67%;
+      height: 80%;
+      float: right;
+      display: inline-block;
+    }
+    #sendMessage{
+      width: 67%;
+      float:right;
+      background-color: rgb(243, 236, 204);
+      display: inline-block;
+    }
     /*
       ADD @media that changes format depending on if the user is on a mobile device or not.
       Basically make the inbox div hidden and make it like Discord's where it just pops out from the side. 
     */
 
+    @media only screen and (max-width: 760px) {
+      #inboxes {
+        display: none;
+      }
+
+      #messages {
+        width: 100%;
+      }
+
+      #sendMessage {
+        width: 100%;
+      }
+    }
   
   </style>
 </head>
 <body>
 
 
-<div class="container-fluid vh-100"">
-  
-  <!--<div class="row vh-100">-->
-  <div class="row" style="height:80%">
+<div class="container-fluid vh-100" style="padding:0;">
 
+  <div id="inboxes" style="background-color:#f2f2f2; overflow-y: scroll;">
+
+    <h2>Moosages</h2>
+
+    <ul class="nav nav-pills flex-column">
+    <%
+        if(!inboxes)
+        {
+          // TODO: tell user that they need to login to see inbox data
+        }
+        else
+        {    
+          if(inboxes.length!=0){
+          var i=0;
+          inboxes.forEach(function(data){
+          link = "http://localhost:3000/?user1=" + inboxes[i].user1 + "&user2=" + inboxes[i].user2
+          %>
+          <li class="nav-item">
+            <hr>
+            <a class="nav-link" href="<%= link %>">inbox <%= i + 1 %> <%=inboxes[i].user1 %> <%=inboxes[i].user2 %></a>
+          </li>
+          <%  i++; }) %>
+          <% } else{ %>
+              <h1>no inboxes found</h1>
+          <% } 
+        }%>
+
+    </ul>
+
+  </div>
+
+  <div id="messages" style="background-color: rgb(243, 236, 204); overflow-y: scroll;">
+    <%
+        if(messages && messages.length!=0){
+        var i=0;
+        messages.forEach(function(data){
+          if(messages[i].sender == curUser)
+          {
+          %>
+            <div class="messageContent" id="sender"><p style="word-wrap: break-word"><%=messages[i].content %></p></div>
+          <%  
+          } else {
+          %>
+            <div class="messageContent" id="reciever"><p style="word-wrap: break-word"><%=messages[i].content %></p></div>
+          <%
+          }
+          i++; 
+        }) 
+          %>
+        <% 
+        } else { 
+        %>
+            <h1>no messages found</h1>
+        <% 
+        } 
+        %>
+  </div>
+  <!--<div class="row vh-100">
+  <div class="row" style="height:80%">
     <div class="col-sm-4" style="background-color:#f2f2f2; overflow-y: scroll; height: 100%;">
       <h2>Moosages</h2>
 
-      <!--ADD INBOXES HERE note: add current inbox at the top as active.-->
       <ul class="nav nav-pills flex-column">
       <%
           if(!inboxes)
@@ -82,8 +165,6 @@
     
     
     <div class="col-sm-8 " style="background-color: rgb(243, 236, 204); overflow-y: scroll; height: 100%">
-    
-      <!--ADD MESSAGES FOR CURRENT INBOX HERE-->
 
       <%
         if(messages && messages.length!=0){
@@ -110,31 +191,33 @@
         } 
         %>
 
-      <!--
-      <div class="messageContent" style="float:right; overflow-y: scroll; margin:2.5%; background-color: rgb(28, 231, 130);"><p style="word-wrap: break-word">hello</p></div>
-      <div class="messageContent" style="float:left; overflow-y: scroll; margin:2.5%; background-color: rgb(106, 179, 228);">Fake Image</div>
-      -->
     </div>
 
   </div>
 
+-->
 
-  <div class="row" style="height:20%">
-  
-    <div class="col-sm-4" style="background-color:#f2f2f2; height: 100%;"></div>
-
-    <div class="col-sm-8 " style="background-color: rgb(206, 231, 240); height: 100%;">
-      <!--TODO: make this send post request to the server containing message data!!!!!-->
+  <div id="sendMessage" style="height:20%">
       
       <div class="form-group" style="height:100%">
         <form id="messageForm" method="post">
-          <textarea class="form-control" id="exampleFormControlTextarea1" form="messageForm"  placeholder="message" name="message" rows="4" style="display: inline; width:87%; margin-top: 2%"></textarea>
-          <button type="submit" class="btn btn-primary" style="margin-bottom: 4%" >Send</button>
+          <textarea class="form-control" id="exampleFormControlTextarea1" form="messageForm"  placeholder="message" name="message" rows="4" style="display: inline; width:77%;"></textarea>
+          <button type="submit" class="btn btn-primary" style="" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89.471-1.178-1.178.471L5.93 9.363l.338.215a.5.5 0 0 1 .154.154l.215.338 7.494-7.494Z"/>
+            </svg>
+          </button>
         </form>
       </div>
     </div>
   
   </div>
+
+  <script>
+    var objDiv = document.getElementById("messages");
+    objDiv.scrollTop = objDiv.scrollHeight;
+  </script>
+  
   
 </div>
 
