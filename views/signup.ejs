@@ -10,6 +10,7 @@
       justify-content: center;
       font-family: Roboto, Arial, sans-serif;
       font-size: 15px;
+      height: 100%;
       }
       form {
       border: 5px solid #f1f1f1;
@@ -66,11 +67,8 @@
     </style>
   </head>
   <body>
-    <form method="post">
+    <form method="post" style="height: 100%">
       <h1>SIGN UP</h1>
-      <div class="icon">
-        <i class="fas fa-user-circle"></i>
-      </div>
       <div class="formcontainer">
       <div class="container">
         <label for="uname"><strong>Username</strong></label>
@@ -78,9 +76,23 @@
         <label for="mail"><strong>E-mail</strong></label>
         <input type="text" placeholder="Enter E-mail" name="email" required>
         <label for="psw"><strong>Password</strong></label>
+        <p>Passwords must be 
+          1) at least 8 characters 
+          2) Contain at least one uppercase and one lowercase character 
+          3) Contains at least one number</p>
         <input type="password" placeholder="Enter Password" name="password" required>
         <input type="date" name="dob">
       </div>
+
+      <% 
+        if(error && error != "none")
+        {
+      %>
+          <p style="color:red"> <%= error %> </p>
+      <%
+        }
+      %>
+      <p>Already have an account? <a href="http://localhost:3000/login"> Click here :)</a></p>
       <button type="submit"><strong>SIGN UP</strong></button>
 
       <!--

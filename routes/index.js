@@ -88,8 +88,8 @@ router.get('/', function(req, res, next) {
 });
 
 
-
-// Message is sent
+// TODO: check if inboxes exist already before querying it!
+// Message is sent or inbox is added
 router.post('/', function(req, res, next){
 
   var username;
@@ -97,8 +97,11 @@ router.post('/', function(req, res, next){
   var user2 = req.query.user2;
   var inbox = [user1, user2];
 
+  //console.log(req.body);
+
   // grabs the message from the body 
   var messageContent = req.body.message;
+  var requestedUser = req.body.requestedUser;
 
   var token = req.cookies.moosenger;
 
@@ -124,11 +127,110 @@ router.post('/', function(req, res, next){
 
     // Makes sure that the users tokin matches to the user1 or user2 username values before displaying the messages
     //var token = req.cookies.whatsAppClone;
-    if(!username || !user1 || !user2 || !messageContent)
+    if(!username)
     {
-      console.log("token or message data does not exist");
+      console.log("token");
       //console.log(username + " " + user1 +  " " + user2 + " " + messageContent);
       res.redirect("/login"); // TODO: send error status here
+    }
+    else if(!messageContent) // empty message OR users is trying to add an inbox
+    {
+
+      // Users is trying to add an inbox
+      if(requestedUser)
+      {
+        //console.log(requestedUser);
+
+        //finds which user should be user1 and user 2 for the inbox key
+        var user1, user2;
+        if(username > requestedUser)
+        {
+          user1 = username;
+          user2 = requestedUser;
+        }
+        else
+        {
+          user1 = requestedUser;
+          user2 = username;
+        }
+
+        // checks that the given inbox does not alread exist
+        db.query("SELECT COUNT(*) AS cnt FROM inbox WHERE user1 = ? AND user2 = ?", [user1, user2], function(err, data) {
+                
+          if(err)
+          {
+            console.log(err);
+            res.redirect("/?user1="+user1+"&user2=" + user2); //ADD ERROR MESSAGE HERE
+          }
+          else
+          {
+          
+            if(data[0].cnt == 0)
+            {
+              // TODO: make sure that the requestedUser is found in the users table before creating inbox!!!
+              
+              // inbox does not exist, so insert
+              // creates new inbox and adds it to the DB
+              db.query("INSERT INTO inbox (user1, user2, numMessages) VALUES (?, ?, ?)", [user1, user2, 0], function(err, data) {
+                if(err)
+                {
+                  console.log("error insert new inbox");
+                  res.redirect("/?user1="+user1+"&user2=" + user2); //TODO ADD ERROR MESSAGE HERE
+                }
+                else
+                {
+                  
+                  // Since we created the inbox, we must now also update the inconversation table
+                  db.query("INSERT INTO inconversation (username, user1, user2) VALUES (?, ?, ?)", [username, user1, user2], function(err, data)
+                  {
+                    if(err)
+                    {
+                      console.log("Error updating inconversation table");
+                      res.redirect("/?user1="+user1+"&user2=" + user2); //TODO ADD ERROR MESSAGE HERE
+                    }
+                  })
+                  
+                  var otherUser;
+                  if(username == user1)
+                  {
+                    otherUser = user2;
+                  }
+                  else
+                  {
+                    otherUser = user1;
+                  }
+                  db.query("INSERT INTO inconversation (username, user1, user2) VALUES (?, ?, ?)", [otherUser, user1, user2], function(err, data)
+                  {
+                    if(err)
+                    {
+                      console.log("Error updating inconversation table");
+                      res.redirect("/?user1="+user1+"&user2=" + user2); //TODO ADD ERROR MESSAGE HERE
+                    }
+                    else
+                    {
+                      // TODO: change redirect to displays the newly created inbox
+                      res.redirect("/?user1="+user1+"&user2=" + user2); //TODO ADD SUCCESS MESSAGE HERE
+                    }
+                  })
+                }
+              });
+
+            }
+            else
+            {
+              // inbox alread exist
+              console.log("Inbox alread exist");
+              res.redirect("/?user1="+user1+"&user2=" + user2); //TODO ADD ERROR MESSAGE HERE
+            }
+          }
+        });
+
+      }
+      else
+      {
+        res.redirect("/?user1="+user1+"&user2=" + user2);
+      }
+      
     }
     else
     {
@@ -136,7 +238,7 @@ router.post('/', function(req, res, next){
         //var data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
         //console.log(data.username);
         
-        if(username == user1 || username == user2) // User is trying to access an inbox they are a participent in
+        if((user1 && user2) && (username == user1 || username == user2)) // User is trying to access an inbox they are a participent in
         {
           var curUser = username;
           db.query("SELECT numMessages FROM inbox WHERE user1 = ? AND user2 = ?",inbox,  function(err, data) {
