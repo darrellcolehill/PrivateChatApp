@@ -16,6 +16,10 @@
       background-color: #f2f2f2;
     }
 
+    html, body{
+          height: 100%;
+    }
+
     .messageContent {
       height: 150px;
       width: 55%;
@@ -53,14 +57,22 @@
       background-color: rgb(220, 247, 248);
       display: inline-block;
     }
+
+    #mobileNav {
+      display: none;
+    }
     /*
       ADD @media that changes format depending on if the user is on a mobile device or not.
       Basically make the inbox div hidden and make it like Discord's where it just pops out from the side. 
     */
 
-    @media only screen and (max-width: 760px) {
+    @media only screen and (max-width: 900px) { /* was 760px */
       #inboxes {
         display: none;
+      }
+      
+      #mobileNav {
+        display:flex;
       }
 
       #messages {
@@ -77,12 +89,48 @@
 <body>
 
 
-<div class="container-fluid vh-100" style="padding:0;">
+  <nav id="mobileNav" class="navbar navbar-expand-lg navbar-light bg-light" style="height:8%; padding: 0;">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" style="margin-left:16px;">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div class="collapse navbar-collapse" id="navbarNavDropdown" style="background-color: white;">
+
+      <ul class="navbar-nav">
+        <%
+        if(!inboxes)
+        {
+          // TODO: tell user that they need to login to see inbox data
+        }
+        else
+        {    
+          if(inboxes.length!=0){
+          var i=0;
+          inboxes.forEach(function(data){
+          link = "http://localhost:3000/?user1=" + inboxes[i].user1 + "&user2=" + inboxes[i].user2
+          %>
+          <li class="nav-item">
+            <hr>
+            <a class="nav-link" href="<%= link %>">inbox <%= i + 1 %> <%=inboxes[i].user1 %> <%=inboxes[i].user2 %></a>
+          </li>
+          <%  i++; }) %>
+          <% } else{ %>
+              <h1>no inboxes found</h1>
+          <% } 
+        }%>
+      </ul>
+    </div>
+  </nav>
+
+
+<div class="container-fluid" style="padding:0; height: 92%;">
 
   <div id="inboxes" style="background-color:#f2f2f2; overflow-y: scroll;">
 
     <h2>Moosages</h2>
 
+    
     <div class="form-group">
       <form id="searchAddInbox" method="post">
         <textarea class="form-control" id="exampleFormControlTextarea1" form="searchAddInbox"  placeholder="add/search inbox" name="requestedUser" value="requestedUser" rows="1" style="display: inline; width:85%;"></textarea>
@@ -93,6 +141,7 @@
         </button>
       </form>
     </div>
+  
 
     
 
