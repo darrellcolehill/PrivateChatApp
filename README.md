@@ -1,4 +1,4 @@
-# PrivateChatApp
+# Messoonger
 A chat application (similar to WhatsApp) that allows private communication between individuals
 
 
