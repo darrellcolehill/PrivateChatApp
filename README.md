@@ -1,5 +1,5 @@
-# PrivateChatApp
-A chat application (similar to WhatsApp) that allows private communication between individuals
+# Messoonger
+A chat application that allows private communication between individuals
 
 
 ## Steps to run program
