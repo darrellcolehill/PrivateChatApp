@@ -1,6 +1,9 @@
 # Messoonger
 A chat application that allows private communication between individuals
 
+## Features to implement
+1) Add sqlite databse
+2) Configure gitpod so the program can be run from anyone's computer and the configuration will take place automatically. 
 
 ## Steps to run program
 1) Download above files
