@@ -9,7 +9,7 @@ var db = require('../db').db;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('signup', { title: 'Private Chat App' });
+  res.render('signup', { title: 'Private Chat App', error: 'none'});
 });
 
 
@@ -26,16 +26,15 @@ router.post('/', function(req, res, next){	//original non sync header
 
 	//block of code that makes sure that the user has entered a valid password
 	var valid = false;
-	if(password.length >= 8 && password.length <= 15) //checks for valid length
+	if(password.length >= 8) //checks for valid length
 	{
-		if( isNaN(parseInt(password.charAt(0))) ) //if the first character is not a number
+		
+		if(password.toUpperCase() != password && password.toLowerCase() != password) //varifies that the user has at least one lower case character and one upper case character
 		{
-			if(password.toUpperCase() != password && password.toLowerCase() != password) //varifies that the user has at least one lower case character and one upper case character
-			{
-				if(password.includes("1") || password.includes("2") || password.includes("3") || password.includes("4") || password.includes("5") || password.includes("6") || password.includes("7") || password.includes("8") || password.includes("9"))
-					valid = true;
-			}
+			if(password.includes("1") || password.includes("2") || password.includes("3") || password.includes("4") || password.includes("5") || password.includes("6") || password.includes("7") || password.includes("8") || password.includes("9"))
+				valid = true;
 		}
+		
 	}
 
 	//block of code that makes sure that the user has entered a valid email. 
@@ -44,11 +43,11 @@ router.post('/', function(req, res, next){	//original non sync header
 		valid = true;
 	}
 
-	console.log("password validation = ", valid); //DELETE AFTER TESTING
+	console.log("password validation = ", valid); //TODO: DELETE AFTER TESTING
 
 	if(valid == false)
 	{
-		res.redirect('/signup'); //TODO: insert error message here indicating to the user that the password is invalid
+		res.render('signup', { title: 'Private Chat App', error: 'Invalid password or email.' }); //TODO: insert error message here indicating to the user that the password is invalid
 		return;
 	}
 
@@ -73,7 +72,7 @@ router.post('/', function(req, res, next){	//original non sync header
 	             // Already exist 
 	             console.log("User already exist"); //DELETE AFTER TESTING
 				 
-	             res.redirect('/signup'); //TODO: notify the user that the user already exist here
+	             res.render('signup', { title: 'Private Chat App', error: 'Username already exist' });//TODO: add link to login
 				 return;
 	             
 	       }else{
@@ -81,12 +80,12 @@ router.post('/', function(req, res, next){	//original non sync header
 	               if(err){
 	                   // return error
 	                   console.log("error while user entered into database"); //delete after testing
-					   res.redirect('/signup'); //TODO: notify the user that there was an error here
+					   res.render('signup', { title: 'Private Chat App', error: 'Error inesrting data' }); //TODO: notify the user that there was an error here
 					   return;
 	               }else{
 	                   // return success , user will insert 
 	                   console.log("User entered into databse");
-	                   res.redirect('/login'); //redirects the user to the login page so they can get their cookie to mark locations
+	                   res.redirect('login'); //redirects the user to the login page so they can get their cookie to mark locations
 					   return;
 					}
 	           })                  
